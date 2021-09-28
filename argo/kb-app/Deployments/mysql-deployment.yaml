@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-host
+  labels:
+    app: wordpress-know2
+spec:
+  selector:
+    matchLabels:
+      app: wordpress-know2
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: wordpress-know2
+    spec:
+      containers:
+        - name: mysql-host
+          image: mysql:5.7
+          imagePullPolicy: Always
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-creds
+                  key: MYSQL_ROOT_PASSWORD
+            - name: MYSQL_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-creds
+                  key: MYSQL_DATABASE
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-creds
+                  key: MYSQL_USER
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-creds
+                  key: MYSQL_PASSWORD
+          #    - name: variablesfromcm
+          #      valueFrom:
+          #        configMapKeyRef:
+          #            key: know2.sql
+          #            name: db-creation
+          #    - name: script
+          #      valueFrom:
+          #        configMapKeyRef:
+          #           key: mysql.sh
+          #           name: mysql-scrip
+          ports:
+            - containerPort: 3306
+              name: mysql-host
+          volumeMounts:
+              - name: mysql-data
+                mountPath: "/var/lib/mysql"
+                subPath: mysql
+              - name: db-creation
+                mountPath: /docker-entrypoint-initdb.d 
+              - name: mysql-script
+                mountPath: /scripts
+      volumes:
+          - name: mysql-data
+            persistentVolumeClaim:
+              claimName: mysql-pvc
+          - name: db-creation
+            configMap:
+              name: db-creation
+          - name: mysql-script
+            configMap:
+              name: mysql-script 
+              defaultMode: 0744
+      imagePullSecrets:
+      - name: registrycred

@@ -1,0 +1,82 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wp-host
+  labels:
+    app: wordpress-know2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wordpress-know2
+      name: wp-host
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: wordpress-know2
+        name: wp-host
+    spec:
+      containers:
+        - name: wp-host
+          image: wordpress:latest
+          imagePullPolicy: Always
+          env:
+            - name: WORDPRESS_DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  key: WORDPRESS_DB_HOST
+                  name: wp-creds
+            - name: WORDPRESS_DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: wp-creds
+                  key: WORDPRESS_DB_NAME
+            - name: WORDPRESS_DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: wp-creds
+                  key: WORDPRESS_DB_USER
+            - name: WORDPRESS_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: wp-creds
+                  key: WORDPRESS_DB_PASSWORD
+            - name: WORDPRESS_AUTH_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: wp-creds
+                  key: WORDPRESS_AUTH_KEY
+            - name: WORDPRESS_LOGGED_IN_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: wp-creds
+                  key: WORDPRESS_LOGGED_IN_KEY
+            - name: WORDPRESS_AUTH_SALT
+              valueFrom:
+                secretKeyRef:
+                  name: wp-creds
+                  key: WORDPRESS_AUTH_SALT
+            - name: WORDPRESS_LOGGED_IN_SALT
+              valueFrom:
+                secretKeyRef:
+                  name: wp-creds
+                  key: WORDPRESS_LOGGED_IN_SALT
+          ports:
+            - containerPort: 80
+              name: wp-host
+          volumeMounts:
+            - mountPath: /var/www/html
+              name: know2
+      volumes:
+        - name: know2
+          hostPath:
+            path: /data-know2
+      imagePullSecrets:
+      - name: registrycred
+          
+          
+
+            
+            
