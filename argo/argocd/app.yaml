@@ -1,1 +1,20 @@
-
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kb-app
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://sahilbhawke@bitbucket.org/sahilbhawke/kubernates-wordpress.git
+    targetRevision: HEAD
+    path: argo/kb-app
+    directory:
+      recurse: true
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: kb-app
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: false
