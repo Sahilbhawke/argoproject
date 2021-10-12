@@ -1,4 +1,3 @@
-
 # Configuration of Amazon RDS in Phpmyadmin
 
 ### Follow the steps along to list below to get the work done
@@ -7,15 +6,15 @@
 
 ## Table of Content
 
-- Understanding phpmyAdmin
+- [Understanding phpmyAdmin](https://github.com/Sahilbhawke/argoproject#understanding-phpmyadmin)
 
-- Download phpmyadmin and Configure for RDS
+- [Download phpmyadmin and Configure for RDS](https://github.com/Sahilbhawke/argoproject#installation)
    
-  * Installation of phpMyAdmin
+  * [Installation of phpMyAdmin](https://github.com/Sahilbhawke/argoproject#installation)
     
-  * Configuration for RDS
+  * [Configuration for RDS](https://github.com/Sahilbhawke/argoproject#configuration-for-rds)
 
--  Navigate to the browser and test
+-  [Navigate to the browser and test](https://github.com/Sahilbhawke/argoproject#access-phpmyadmin-from-your-local-browser)
   
 
   ## Understanding PHPMyAdmin
